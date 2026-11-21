@@ -20,5 +20,23 @@ pipeline {
                 echo 'Running automated tests!'
             }
         }
+        
+        stage('Test SSH Connection') {
+    steps {
+        withCredentials([
+            sshUserPrivateKey(
+                credentialsId: 'petclinic-deploy-key',
+                keyFileVariable: 'SSH_KEY'
+            )
+        ]) {
+            sh '''
+                ssh -i "$SSH_KEY" \
+                    -o StrictHostKeyChecking=accept-new \
+                    ubuntu@172.31.40.147 \
+                    'hostname && whoami'
+            '''
+        }
+    }
+}
     }
 }
