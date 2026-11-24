@@ -18,6 +18,25 @@ pipeline {
                                  fingerprint: true
             }
         }
+
+        stage('Test SSH Connection') {
+            steps {
+                withCredentials([
+                    sshUserPrivateKey(
+                        credentialsId: 'petclinic-deploy-key',
+                        keyFileVariable: 'SSH_KEY'
+                    )
+                ]) {
+                    sh '''
+                        ssh -i "$SSH_KEY" \
+                            -o StrictHostKeyChecking=accept-new \
+                            -o BatchMode=yes \
+                            ubuntu@172.31.40.147 \
+                            'hostname && whoami'
+                    '''
+                }
+            }
+        }
     }
 
     post {
