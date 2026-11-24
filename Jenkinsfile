@@ -31,7 +31,7 @@ pipeline {
                         ssh -i "$SSH_KEY" \
                             -o StrictHostKeyChecking=accept-new \
                             -o BatchMode=yes \
-                            ubuntu@172.31.40.147 \
+                            ubuntu@172.31.16.48 \
                             'hostname && whoami'
                     '''
                 }
